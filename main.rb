@@ -32,17 +32,6 @@ class SteamApi
   end
 end
 
-# we can't have duplicate keys in the hash... unless we do it like this.
-def build_kv(opts)
-  kv = {}.compare_by_identity
-  opts.each do |k, v|
-    kv["key"] = k
-    kv["value"] = v
-  end
-
-  return kv
-end
-
 steam = SteamApi.new()
 
 require 'sinatra'
@@ -53,12 +42,6 @@ set :environment, :development
 set :server, "thin"
 #set :bind, '0.0.0.0'
 #set :dump_errors, false
-
-# see http://getskeleton.com/
-
-#get '/' do
-#  erb :index
-#end
 
 get '/' do
   app = params[:app]
@@ -114,7 +97,6 @@ get '/' do
   ).body
 
   @result = JSON.parse(@result)
-  #binding.pry
 
   erb :index, :locals => {app: app}
 end
