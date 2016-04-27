@@ -1,0 +1,72 @@
+<div class="row">
+  <div class="one-half column" style="margin-top: 5%">
+    <% if app.nil? then %>
+      <h4>Find Configs</h4>
+
+      <form method="get">
+        <div class="row">
+          <div class="six columns">
+            <label>App</label>
+            <input class="u-full-width" type="text" placeholder="App ID or Shortcut Name" name="app">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="six columns">
+            <label>Search Text</label>
+            <input class="u-full-width" type="text" placeholder="Some text to look for" name="search_text">
+          </div>
+        </div>
+        <div class="row">
+          <div class="six columns">
+            <label>Owner</label>
+            <input class="u-full-width" type="text" placeholder="Steam3 ID" name="owner">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="four columns">
+            <label>Visibility</label>
+            <select class="u-full-width" name="visibility">
+              <option value="public">Public</option>
+              <option value="private">Private</option>
+            </select>
+          </div>
+
+          <div class="two columns">
+            <label>Deleted</label>
+            <select class="u-half-width" name="deleted">
+              <option value="0">No</option>
+              <option value="1">Yes</option>
+            </select>
+          </div>
+
+          <div class="two columns">
+            <label>Autosave</label>
+            <select class="u-half-width" name="autosave">
+              <option value="0">No</option>
+              <option value="1">Yes</option>
+            </select>
+          </div>
+        </div>
+
+        <input class="button-primary" type="submit" value="Submit">
+      </form>
+
+    <% elsif @result["response"]["total"] == 0 %>
+      <h2>No Results</h2>
+    <% else %>
+
+      <h2>Found <%= @result["response"]["total"] %> Results for <%= app %></h2>
+
+      <% @result["response"]["publishedfiledetails"].each do |k, v| %>
+
+        <h4><%= k["title"] %></h4>
+        <p><%= k["short_description"] %></p>
+        <pre><code><%= k %></code></pre>
+        <p><a href="/query/<%= k["publishedfileid"] %>"><%= k["publishedfileid"] %></a></p>
+
+      <% end %>
+    <% end %>
+  </div>
+</div>
